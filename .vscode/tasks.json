@@ -12,8 +12,7 @@
                 "-Wextra",
                 "-pedantic",
                 "${workspaceFolder}\\code\\platform_thread.c",
-                "${workspaceFolder}\\code\\mutex.c",
-                "${workspaceFolder}\\testes\\test_mutex.c",
+                "${workspaceFolder}\\testes\\teste_mutex.c",
                 "-o",
                 "${workspaceFolder}\\testes\\test_mutex.exe"
             ],

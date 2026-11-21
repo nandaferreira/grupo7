@@ -2,6 +2,7 @@
 #include <stdio.h>
 #define THREADS_TRABALHO 4
 #define INCREMENTS_PER_THREAD 10000
+#include <windows.h>
 
 static int contador_compartilhado = 0;
 static pt_mutex_t mutex_contador;
@@ -11,11 +12,11 @@ void *task_incremento(void *arg){
     printf("thread %d iniciada\n", id);
 
     for(int i = 0; i < INCREMENTS_PER_THREAD; i++){
-        pt_mutex_lock_(&mutex_contador);
+        pt_mutex_lock(&mutex_contador);
         contador_compartilhado++; //seção crítica
         pt_mutex_unlock(&mutex_contador);
     }
-    printf("thread finalizada\n", id);
+    printf("thread %d finalizada\n", id);
     return NULL;
 }
 
@@ -31,7 +32,8 @@ int main(void){
         return 1;
     }
     
-    printf("mutex inicializado\n");
+    printf("--mutex inicializado...--\n");
+    Sleep(1000); //1segundo
 
     //2) teste criaacao
     for(int i = 0; i < THREADS_TRABALHO; i++){
@@ -41,7 +43,7 @@ int main(void){
             return 1;
         }
     }
-    printf("%d threads criadas", THREADS_TRABALHO);
+    printf("- thread %d criada \n", THREADS_TRABALHO);
 
     //3) teste espera
     for(int i = 0; i < THREADS_TRABALHO; i ++){
@@ -50,7 +52,7 @@ int main(void){
             return 1;
         }
     }
-    printf("threads finalizadas\n");
+    printf("\n--threads finalizadas--\n");
 
     //4) teste destruir mutex
     if(pt_mutex_destroy(&mutex_contador) != 0){

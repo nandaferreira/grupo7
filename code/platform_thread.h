@@ -1,7 +1,6 @@
-#ifndef PLATAFORM_THREAD_H
-#define PLATAFORM_THREAD_H
-#endif
-#define _WIN32
+#ifndef PLATFORM_THREAD_H
+#define PLATFORM_THREAD_H
+
 #include <windows.h>
 
 typedef HANDLE pt_thread_t;
@@ -14,4 +13,6 @@ int pt_mutex_init(pt_mutex_t *mutex);
 int pt_mutex_lock(pt_mutex_t *mutex);
 int pt_mutex_unlock(pt_mutex_t *mutex);
 int pt_mutex_destroy(pt_mutex_t *mutex);
+
+#endif
 

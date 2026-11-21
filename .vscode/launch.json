@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/grupo7/code",
-      "program": "c:/grupo7/code/build/Debug/outDebug",
+      "cwd": "C:/grupo7/testes",
+      "program": "C:/grupo7/testes/teste_mutex.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

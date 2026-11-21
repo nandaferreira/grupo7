@@ -1,6 +1,6 @@
 #include "platform_thread.h"
 #include <stdlib.h>
-#define _WIN32
+#include <stdio.h>
 
 int pt_thread_create(pt_thread_t *thread, void *(*inicia_thread)(void*), void *arg){
     if(thread == NULL || inicia_thread == NULL){
