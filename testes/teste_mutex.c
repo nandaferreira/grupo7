@@ -1,80 +1,76 @@
 #include "../code/platform_thread.h"
-
 #include <stdio.h>
-
-#define THREAD_COUNT 4
+#define THREADS_TRABALHO 4
 #define INCREMENTS_PER_THREAD 10000
 
-typedef struct {
-    pt_mutex_t mutex;
-    unsigned long counter;
-} shared_data_t;
+static int contador_compartilhado = 0;
+static pt_mutex_t mutex_contador;
 
-static void increment_counter(void *argument)
-{
-    shared_data_t *shared_data = (shared_data_t *)argument;
-    int i;
+void *task_incremento(void *arg){
+    int id = *(int *)arg;
+    printf("thread %d iniciada\n", id);
 
-    for (i = 0; i < INCREMENTS_PER_THREAD; i++) {
-        int error = pt_mutex_lock(&shared_data->mutex);
-        if (error != 0) {
-            fprintf(stderr, "pt_mutex_lock falhou: %d\n", error);
-            return;
-        }
-
-        shared_data->counter++;
-
-        error = pt_mutex_unlock(&shared_data->mutex);
-        if (error != 0) {
-            fprintf(stderr, "pt_mutex_unlock falhou: %d\n", error);
-            return;
-        }
+    for(int i = 0; i < INCREMENTS_PER_THREAD; i++){
+        pt_mutex_lock_(&mutex_contador);
+        contador_compartilhado++; //seção crítica
+        pt_mutex_unlock(&mutex_contador);
     }
+    printf("thread finalizada\n", id);
+    return NULL;
 }
 
-int main(void)
-{
-    pt_thread_t threads[THREAD_COUNT];
-    shared_data_t shared_data = { 0 };
-    int created_threads = 0;
-    int i;
-    int error;
+int main(void){
+    pt_thread_t threads[THREADS_TRABALHO];
+    int ids[THREADS_TRABALHO];
 
-    error = pt_mutex_init(&shared_data.mutex);
-    if (error != 0) {
-        fprintf(stderr, "pt_mutex_init falhou: %d\n", error);
+    printf("--teste mutex --\n");
+    //1) teste iniciar
+
+    if (pt_mutex_init(&mutex_contador) != 0){
+        fprintf(stderr, "erro de inicializacao do mutex\n");
         return 1;
     }
+    
+    printf("mutex inicializado\n");
 
-    for (i = 0; i < THREAD_COUNT; i++) {
-        error = pt_thread_create(&threads[i], increment_counter, &shared_data);
-        if (error != 0) {
-            fprintf(stderr, "pt_thread_create falhou: %d\n", error);
-            break;
-        }
-        created_threads++;
-    }
-
-    for (i = 0; i < created_threads; i++) {
-        error = pt_thread_join(&threads[i]);
-        if (error != 0) {
-            fprintf(stderr, "pt_thread_join falhou: %d\n", error);
+    //2) teste criaacao
+    for(int i = 0; i < THREADS_TRABALHO; i++){
+        ids[i] = i + 1;
+        if(pt_thread_create(&threads[i], task_incremento, &ids[i]) != 0){
+            fprintf(stderr, "erro ao criar a thread %d \n", i +1);
             return 1;
         }
     }
+    printf("%d threads criadas", THREADS_TRABALHO);
 
-    error = pt_mutex_destroy(&shared_data.mutex);
-    if (error != 0) {
-        fprintf(stderr, "pt_mutex_destroy falhou: %d\n", error);
+    //3) teste espera
+    for(int i = 0; i < THREADS_TRABALHO; i ++){
+        if(pt_thread_join(threads[i], NULL) != 0){
+            fprintf(stderr, "erro na juncao da thread %d\n", i +1);
+            return 1;
+        }
+    }
+    printf("threads finalizadas\n");
+
+    //4) teste destruir mutex
+    if(pt_mutex_destroy(&mutex_contador) != 0){
+        fprintf(stderr, "erro destruicao mutex\n");
+        return 1;
+    }
+    printf("thread excluida\n");
+
+    //5) teste mutex
+
+    int esperado = THREADS_TRABALHO * INCREMENTS_PER_THREAD;
+    printf("\nresultado esperado: %d\n", esperado);
+    printf("resultado obtido: %d \n", contador_compartilhado);
+
+    if(contador_compartilhado == esperado){
+        printf("nenhuma condicao de corrida encontrada \n");
+        return 0;
+    }else{
+        printf("falha - condicao de corrida encontrada\n");
         return 1;
     }
 
-    if (created_threads != THREAD_COUNT
-        || shared_data.counter != THREAD_COUNT * INCREMENTS_PER_THREAD) {
-        fprintf(stderr, "Resultado incorreto: %lu incrementos\n", shared_data.counter);
-        return 1;
-    }
-
-    printf("Sucesso: %lu incrementos protegidos por mutex.\n", shared_data.counter);
-    return 0;
 }
