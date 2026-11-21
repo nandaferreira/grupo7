@@ -8,70 +8,60 @@ static int contador_compartilhado = 0;
 static pt_mutex_t mutex_contador;
 
 void *task_incremento(void *arg){
-    int id = *(int *)arg;
-    printf("thread %d iniciada\n", id);
+    (void)arg;
 
     for(int i = 0; i < INCREMENTS_PER_THREAD; i++){
         pt_mutex_lock(&mutex_contador);
         contador_compartilhado++; //seção crítica
         pt_mutex_unlock(&mutex_contador);
     }
-    printf("thread %d finalizada\n", id);
     return NULL;
 }
 
 int main(void){
     pt_thread_t threads[THREADS_TRABALHO];
-    int ids[THREADS_TRABALHO];
-
-    printf("--teste mutex --\n");
-    //1) teste iniciar
+    printf(" teste da camada de abstracao: mutex\n");
+    printf("========================================\n\n");
 
     if (pt_mutex_init(&mutex_contador) != 0){
-        fprintf(stderr, "erro de inicializacao do mutex\n");
+        fprintf(stderr, "erro: mutex nao inicializado\n");
         return 1;
     }
-    
-    printf("--mutex inicializado...--\n");
-    Sleep(1000); //1segundo
+    printf("ok: mutex inicializado.\n");
+    Sleep(1000);
 
-    //2) teste criaacao
     for(int i = 0; i < THREADS_TRABALHO; i++){
-        ids[i] = i + 1;
-        if(pt_thread_create(&threads[i], task_incremento, &ids[i]) != 0){
-            fprintf(stderr, "erro ao criar a thread %d \n", i +1);
+        if(pt_thread_create(&threads[i], task_incremento, NULL) != 0){
+            fprintf(stderr, "erro: nao foi possivel criar a thread %d.\n", i + 1);
             return 1;
         }
     }
-    printf("- thread %d criada \n", THREADS_TRABALHO);
+    printf("ok: Threads criadas: %d.\n", THREADS_TRABALHO);
 
-    //3) teste espera
     for(int i = 0; i < THREADS_TRABALHO; i ++){
         if(pt_thread_join(threads[i], NULL) != 0){
-            fprintf(stderr, "erro na juncao da thread %d\n", i +1);
+            fprintf(stderr, "erro: nao foi possivel aguardar a thread %d\n", i + 1);
             return 1;
         }
+        printf("  - thread %d finalizada.\n", i + 1);
     }
-    printf("\n--threads finalizadas--\n");
+    printf("ok: todas as threads foram finalizadas\n");
 
-    //4) teste destruir mutex
     if(pt_mutex_destroy(&mutex_contador) != 0){
-        fprintf(stderr, "erro destruicao mutex\n");
+        fprintf(stderr, "erro: nao foi possivel destruir o mutex\n");
         return 1;
     }
-    printf("thread excluida\n");
-
-    //5) teste mutex
+    printf("ok: mutex destruido.\n\n");
 
     int esperado = THREADS_TRABALHO * INCREMENTS_PER_THREAD;
-    printf("\nresultado esperado: %d\n", esperado);
-    printf("resultado obtido: %d \n", contador_compartilhado);
+    printf("resultado esperado: %d\n", esperado);
+    printf("resultado obtido : %d\n", contador_compartilhado);
 
     if(contador_compartilhado == esperado){
-        printf("nenhuma condicao de corrida encontrada \n");
+        printf("\nresultado: sucesso - os valores correspondem.\n");
         return 0;
     }else{
-        printf("falha - condicao de corrida encontrada\n");
+        printf("\nresultado: falha - os valores sao diferentes.\n");
         return 1;
     }
 
