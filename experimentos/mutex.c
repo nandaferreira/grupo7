@@ -139,16 +139,22 @@ int main(){
             }
             fflush(csv_bruto);
             
-            double media_tempo = calcular_media(tempos, REPETICOES);
+            double media_tempo = calcula_media(tempos, REPETICOES);
             double tempo_desvioP = calcula_desvioP(tempos, REPETICOES, media_tempo);
             double media_vazao = calcula_media(vazoes, REPETICOES);
             double vazao_desvioP = calcula_desvioP(vazoes, REPETICOES,media_vazao);
 
             fprintf(csv_estatisticas, "%s,%d,%d,%.9f,%.9f,%.2f,%.2f\n", nomes_cenarios[c], n_threads, REPETICOES, media_tempo, tempo_desvioP, media_vazao, vazao_desvioP);
             fflush(csv_estatisticas);
+
+            printf("[%s | %2d threads] tempo: %.6f s (+/- %.6f) | vazao: %.2f operacoes/segundo (+/- %.2f)\n", nomes_cenarios[c], n_threads, media_tempo, tempo_desvioP, media_vazao, vazao_desvioP);
             //adicionar prints
         }
+        printf("---------------------\n");
     }
 
-
+    fclose(csv_bruto);
+    fclose(csv_estatisticas);
+    printf("\n dados salvos com sucesso. verificar dados/");
+    return 0;
 }
