@@ -12,6 +12,15 @@ int pt_mutex_init(pt_mutex_t *mutex);
 int pt_mutex_lock(pt_mutex_t *mutex);
 int pt_mutex_unlock(pt_mutex_t *mutex);
 int pt_mutex_destroy(pt_mutex_t *mutex);
+//Parte do Spinlock
+typedef struct{
+    volatile LONG locked;
+}pt_spinlock_t;
+
+int pt_spinlock_init(pt_spinlock_t *spinlock);
+int pt_spinlock_lock(pt_spinlock_t *spinlock);
+int pt_spinlock_unlock(pt_spinlock_t *spinlock);
+int pt_spinlock_destroy(pt_spinlock_t *spinlock);
 
 #endif
 
