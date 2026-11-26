@@ -1,0 +1,9 @@
+36574 futex(0x7417cd7ffce8, FUTEX_WAIT_BITSET|FUTEX_CLOCK_REALTIME, 2, NULL, FUTEX_BITSET_MATCH_ANY <unfinished ...>
+36579 +++ exited with 0 +++
+36576 +++ exited with 0 +++
+36574 <... futex resumed>)              = 0
+36574 futex(0x7417cc7fdce8, FUTEX_WAIT_BITSET|FUTEX_CLOCK_REALTIME, 2, NULL, FUTEX_BITSET_MATCH_ANY <unfinished ...>
+36581 +++ exited with 0 +++
+36574 <... futex resumed>)              = 0
+36580 +++ exited with 0 +++
+36574 +++ exited with 0 +++

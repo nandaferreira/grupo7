@@ -1,0 +1,79 @@
+36549 futex(0x7e3048bffce8, FUTEX_WAIT_BITSET|FUTEX_CLOCK_REALTIME, 2, NULL, FUTEX_BITSET_MATCH_ANY <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36550 <... futex resumed>)              = 0
+36551 <... futex resumed>)              = 0
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36551 <... futex resumed>)              = 0
+36550 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36553 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36552 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 1
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36550 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 0
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = 0
+36550 <... futex resumed>)              = 0
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36551 <... futex resumed>)              = 0
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36551 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL) = -1 EAGAIN (Recurso temporariamente indisponível)
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 0
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = 0
+36551 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL) = -1 EAGAIN (Recurso temporariamente indisponível)
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36551 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL) = -1 EAGAIN (Recurso temporariamente indisponível)
+36551 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 0
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = 0
+36550 <... futex resumed>)              = 0
+36551 +++ exited with 0 +++
+36553 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36553 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36552 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36550 <... futex resumed>)              = 0
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36552 <... futex resumed>)              = 0
+36550 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36553 <... futex resumed>)              = 0
+36553 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 1
+36550 <... futex resumed>)              = 0
+36552 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1 <unfinished ...>
+36550 futex(0x63bb4c5ae060, FUTEX_WAIT_PRIVATE, 2, NULL <unfinished ...>
+36553 <... futex resumed>)              = 0
+36552 <... futex resumed>)              = 1
+36550 <... futex resumed>)              = -1 EAGAIN (Recurso temporariamente indisponível)
+36553 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 0
+36550 futex(0x63bb4c5ae060, FUTEX_WAKE_PRIVATE, 1) = 0
+36552 +++ exited with 0 +++
+36549 <... futex resumed>)              = 0
+36553 +++ exited with 0 +++
+36550 +++ exited with 0 +++
+36549 +++ exited with 0 +++
