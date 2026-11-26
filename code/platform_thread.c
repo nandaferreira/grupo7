@@ -46,3 +46,32 @@ int pt_mutex_destroy(pt_mutex_t *mutex){
     DeleteCriticalSection(mutex);
     return 0;
 }
+
+//Parte do Spinlock
+int pt_spinlock_init(pt_spinlock_t *spinlock){
+    if(spinlock == NULL){return -1;}
+    spinlock->locked = 0;
+    return 0;
+}
+
+int pt_spinlock_lock(pt_spinlock_t *spinlock){
+    if(spinlock == NULL){return -1;}
+    while(InterlockedExchange(&spinlock->locked, 1) != 0){
+        while(spinlock->locked != 0){
+            YieldProcessor();
+        }
+    }
+    return 0;
+}
+
+int pt_spinlock_unlock(pt_spinlock_t *spinlock){
+    if(spinlock == NULL){return -1;}
+    InterlockedExchange(&spinlock->locked, 0);
+    return 0;
+}
+
+int pt_spinlock_destroy(pt_spinlock_t *spinlock){
+    if(spinlock == NULL){return -1;}
+    spinlock->locked = 0;
+    return 0;
+}
