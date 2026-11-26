@@ -1,7 +1,7 @@
 #include "../code/platform_thread.h"
 #include <stdio.h>
 #define THREADS_TRABALHO 4
-#define INCREMENTS_PER_THREAD 10000
+#define INCREMENTS_PER_THREAD 100000
 #include <windows.h>
 
 static int contador_compartilhado = 0;
