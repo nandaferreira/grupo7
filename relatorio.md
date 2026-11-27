@@ -9,10 +9,18 @@ Sem sincronização, duas ou mais threads podem ler e alterar o contador ao mesm
 - **Mutex:** uma thread que não consegue adquirir o bloqueio pode ser suspensa até que ele seja liberado. Isso evita consumir continuamente CPU durante esperas mais longas, embora o bloqueio e o despertar tenham custos.
 - **Spinlock:** a thread repete tentativas de aquisição enquanto o bloqueio está ocupado. Essa espera ativa pode ser vantajosa quando a espera é muito curta, mas consome CPU e pode aumentar a contenção.
 
-No código Windows, a abstração de mutex usa `CRITICAL_SECTION` (com `InitializeCriticalSection`, `EnterCriticalSection` e `LeaveCriticalSection`) e o spinlock usa operações atômicas Win32 (`InterlockedExchange`) com `YieldProcessor`. A demonstração Linux utiliza `pthread_mutex` e `pthread_spinlock`; a implementação de mutex POSIX pode recorrer a Futex quando há contenção.
+Para a implementação em Windows, a biblioteca de abstração de mutex utiliza a _CRITICAL_SECTION_, com: 
+- _InitializeCriticalSection_ 
+- _EnterCriticalSection_
+- _LeaveCriticalSection_
 
-Os experimentos também verificam a correção: ao final, o contador deve corresponder ao total de incrementos previsto. Os tempos devem ser interpretados junto com o tamanho da carga, a configuração da máquina e o método usado para medir.
+ Já o spinlock usa as operações atômicas da Win32 _InterlockedExchange_ com: 
+ - _YieldProcessor_
+ 
+ A demonstração Linux utiliza _pthread_mutex_ e _pthread_spinlock_; a implementação de mutex POSIX pode recorrer a Futex quando há contenção.
 
+Os experimentos verificam a correção no final, onde o contador  corresponde ao total de incrementos previsto. Os tempos foram interpretados junto com o tamanho da carga, a configuração da máquina e o método usado para medir.
+***
 ## 2. Linux — configuração e implementação
 
 ### 2.1 Configuração do ambiente
@@ -33,9 +41,9 @@ Configuração registrada para a máquina Linux:
 
 ### 2.2 Implementação e execução
 
-A demonstração em `testes/linux/demo_mutex_spinlock_linux.c` cria quatro threads. Cada uma realiza 100.000 incrementos no contador compartilhado, totalizando 400.000 incrementos. O programa seleciona o mecanismo pela linha de comando (`mutex` ou `spin`), valida as chamadas POSIX e compara o contador final com o valor esperado.
+A demonstração em  cria quatro threads onde cada uma realiza 100.000 incrementos no contador compartilhado, o que resulta em um total de  400.000 incrementos. O programa seleciona o mecanismo pela linha de comando (`mutex` ou `spin`), valida as chamadas POSIX e compara o contador final com o valor esperado.
 
-O mutex é inicializado estaticamente com `PTHREAD_MUTEX_INITIALIZER`. O spinlock é inicializado com `pthread_spin_init` no modo `PTHREAD_PROCESS_PRIVATE`. Em ambos os casos, a aquisição e a liberação delimitam apenas o incremento do contador. A execução pode ser feita com `./demo mutex` ou `./demo spin`; o README em `testes/linux/README.md` registra os comandos de compilação e de rastreamento com `strace`.
+O mutex é inicializado estaticamente com _PTHREAD_MUTEX_INITIALIZER_. O spinlock é inicializado com _pthread_spin_init_ no modo _PTHREAD_PROCESS_PRIVATE_. Em ambos os casos, a aquisição e a liberação delimitam apenas o incremento do contador. A execução pode ser feita com `./demo mutex` ou `./demo spin`; o README em `testes/linux/README.md` registra os comandos de compilação e de rastreamento com `strace`.
 
 ### 2.3 Resultados observados
 
