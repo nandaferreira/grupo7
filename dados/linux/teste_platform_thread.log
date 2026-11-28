@@ -1,0 +1,2 @@
+Mutex: 400000 | Esperado: 400000 | OK
+Spinlock: 400000 | Esperado: 400000 | OK
