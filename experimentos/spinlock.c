@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../code/platform_thread.h"
-#define AQUISICOES_POR_THREAD 10000
+#define AQUISICOES_POR_THREAD 16000
 #define REPETICOES 30
 #define MAX_THREADS 16
 
