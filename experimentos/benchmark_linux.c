@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
+#include "../code/platform_thread.h"
 #include <time.h>
 #include <stdint.h>
 
@@ -10,8 +10,8 @@
 #define REPETICOES 30
 #define MAX_THREADS 16
 
-static pthread_mutex_t mutex;
-static pthread_spinlock_t spinlock;
+static pt_mutex_t mutex;
+static pt_spinlock_t spinlock;
 static long contador;
 
 typedef struct {
@@ -59,9 +59,9 @@ static void *executar(void *arg) {
     for (int i = 0; i < tarefa->aquisicoes; i++) {
 
         if (tarefa->usar_spinlock)
-            verificar(pthread_spin_lock(&spinlock));
+            verificar(pt_spinlock_lock(&spinlock));
         else
-            verificar(pthread_mutex_lock(&mutex));
+            verificar(pt_mutex_lock(&mutex));
 
         // Inicio da regiao critica
         contador++;
@@ -69,9 +69,9 @@ static void *executar(void *arg) {
         // Fim da regiao critica
 
         if (tarefa->usar_spinlock)
-            verificar(pthread_spin_unlock(&spinlock));
+            verificar(pt_spinlock_unlock(&spinlock));
         else
-            verificar(pthread_mutex_unlock(&mutex));
+            verificar(pt_mutex_unlock(&mutex));
     }
 
     return NULL;
@@ -83,16 +83,15 @@ static double executar_rodada(
     int duracao_us,
     int usar_spinlock
 ) {
-    pthread_t threads[MAX_THREADS];
+    pt_thread_t threads[MAX_THREADS];
     tarefa_t tarefas[MAX_THREADS];
 
     contador = 0;
 
     if (usar_spinlock)
-        verificar(pthread_spin_init(
-            &spinlock, PTHREAD_PROCESS_PRIVATE));
+        verificar(pt_spinlock_init(&spinlock));
     else
-        verificar(pthread_mutex_init(&mutex, NULL));
+        verificar(pt_mutex_init(&mutex));
 
     for (int i = 0; i < n_threads; i++) {
         tarefas[i].aquisicoes =
@@ -105,20 +104,19 @@ static double executar_rodada(
     uint64_t inicio = agora_ns();
 
     for (int i = 0; i < n_threads; i++) {
-        verificar(pthread_create(
-            &threads[i], NULL, executar, &tarefas[i]));
+        verificar(pt_thread_create(&threads[i], executar, &tarefas[i]));
     }
 
     for (int i = 0; i < n_threads; i++) {
-        verificar(pthread_join(threads[i], NULL));
+        verificar(pt_thread_join(threads[i], NULL));
     }
 
     uint64_t fim = agora_ns();
 
     if (usar_spinlock)
-        verificar(pthread_spin_destroy(&spinlock));
+        verificar(pt_spinlock_destroy(&spinlock));
     else
-        verificar(pthread_mutex_destroy(&mutex));
+        verificar(pt_mutex_destroy(&mutex));
 
     if (contador != TOTAL_AQUISICOES) {
         fprintf(stderr,
